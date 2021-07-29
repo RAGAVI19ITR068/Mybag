@@ -1,0 +1,12 @@
+<% layout('template') %>
+
+    <h1>
+        <%= category%> Products!
+    </h1>
+    <% for(let product of products) { %>
+        <a href="/additem/<%= product._id %> "><img src="<%= product.image %> " alt=""></a>
+        <% }%>
+            <a href="/products/new">New Product</a>
+            <%if(category !=='All' ) {%>
+                <a href="/products">All Products</a>
+                <% } %>

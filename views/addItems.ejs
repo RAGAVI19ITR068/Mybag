@@ -1,0 +1,34 @@
+<% layout('template') %>
+
+    <h1>Add the product</h1>
+    <form action="/additem" method="POST">
+        <label for="itemname">Name</label><br>
+        <input type="text" id="itemname" name="productName" placeholder="Enter Item Name"><br>
+        <label for="manufacturerName">Manufacturer</label><br>
+        <input type="text" id="manufacturerName" name="manufacturer" placeholder="Enter Manufacturer Name"><br>
+        <label for="category">Category</label>
+        <select name="category" id="category">
+            <% for(let category of categories){ %>
+                <option value="<%=category%>">
+                    <%=category%>
+                </option>
+                <% } %>
+        </select>
+        <label for="rating">Rating</label>
+        <select name="rating" id="rating">
+            <% for(let rating of ratings){ %>
+                <option value="<%=rating%>">
+                    <%=rating%>
+                </option>
+                <% } %>
+        </select>
+        <label for="price">Price</label>
+        <input type="text" id="price" name="price" placeholder="10">
+        <br>
+        <label for="image">Image URL</label><br>
+        <input type="text" id="image" name="image" placeholder="Enter Image URL"><br>
+        <label for="about">About</label><br>
+        <textarea id="about" name="about" rows="4" cols="50" placeholder="About Item"></textarea><br>
+        <button>ADD</button>
+        <a href="./adminPage.ejs" style="text-decoration: none;">CANCEL</a>
+    </form>

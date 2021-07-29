@@ -1,0 +1,21 @@
+<% layout('template') %>
+
+    <h1>Your item</h1>
+    <ul>
+        <img src="<%= product.image%>" alt="">
+        <li>Name: <%= product.productName%>
+        </li>
+        <li>Manufacturer: <%= product.manufacturer%>
+        </li>
+        <li>Category: <%= product.category%>
+        </li>
+        <li>Rating: <%= product.rating%>
+        </li>
+        <li>Price: Rs.<%= product.price%>
+        </li>
+    </ul>
+    <a href="/products">All Products</a>
+    <!-- <a href="/products/<%=product._id%>/edit">Edit Product</a> -->
+    <!-- <form action="/products/<%=product._id%>?_method=DELETE" method="POST">
+        <button>Delete</button>
+    </form> -->

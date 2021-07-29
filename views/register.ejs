@@ -1,0 +1,31 @@
+<% layout('template') %>
+
+  <div class="cointainer">
+    <section id="home-page">
+      <div id="new">
+        <img src="css/img/mybagshop-white.png" class="img-fluid align-center a2img2" style="width: 20%;">
+        <form class="mx-auto" action="/register" method="POST">
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+          </div>
+          <div class="mb-3">
+            <label for="renterpassword" class="form-label">Renter Password</label>
+            <input type="password" class="form-control" id="reenterpassword" name="reenterpassword">
+          </div>
+          <p class='error my-2 mx-2'>
+            <% if(error && error.length){ %>
+              <%= error %>
+                <% } %>
+          </p>
+          <button class="a1btn1 my-2" type="submit" class="btn btn-primary">Register</button>
+          <p class="a1text1 mx-2">Already have an account? <a href="/login" style="text-decoration: none;">Login</a>
+          </p>
+        </form>
+      </div>
+    </section>
+  </div>

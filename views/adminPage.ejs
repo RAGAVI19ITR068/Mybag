@@ -1,0 +1,19 @@
+<% layout('template') %>
+
+    <%= success %>
+        <h1>Hi <%= admin.username %>...</h1>
+        <div>
+            <form action="/logout" method="POST">
+                <button>Log out</button>
+            </form>
+        </div>
+
+        <div>
+            <a href="/products">All Products</a>
+        </div>
+
+        <div>
+            <form action="/additem" method="GET">
+                <button>Add Item</button>
+            </form>
+        </div>
