@@ -45,7 +45,7 @@ router.get('/register/:id', requiredLogin, async (req, res) => {
     const user = await Auth.findById(id);
     const productsMen = await Product.find({category: "Men"})
     const productsWomen = await Product.find({category: "Women"})
-    res.render('userPage', { user, productsMen, productsWomen });
+    res.render('index', { user, productsMen, productsWomen, category: 'All' });
 })
 
 
