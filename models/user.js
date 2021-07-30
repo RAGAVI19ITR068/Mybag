@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+// const passportLocalMongoose = require('passport-local-mongoose');
 
 mongoose.connect('mongodb://localhost:27017/Mybag-raga', {
     useNewUrlParser: true,
@@ -25,7 +26,9 @@ const authSchema = new mongoose.Schema({
         type: String,
         required: [true, 'Password cannot be blank']
     }
+    // mycartArray:[String]
 });
+// authSchema.plugin(passportLocalMongoose);
 
 authSchema.statics.findAndValidate = async function(username, password) {
     const foundUser = await this.findOne({ username });

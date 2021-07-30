@@ -1,6 +1,12 @@
 <% layout('template') %>
 
-    <h1>Your item</h1>
+    <%= success %> 
+    <h1>
+        <a href="/products" style="text-decoration:none;">
+            <b>&#8592</b>
+        </a>
+        <%= product.manufacturer%> product
+    </h1>
     <ul>
         <img src="<%= product.image%>" alt="">
         <li>Name: <%= product.productName%>
@@ -13,9 +19,16 @@
         </li>
         <li>Price: Rs.<%= product.price%>
         </li>
+        <li>
+            About: <%= product.about%>
+        </li>
     </ul>
-    <a href="/products">All Products</a>
-    <!-- <a href="/products/<%=product._id%>/edit">Edit Product</a> -->
-    <!-- <form action="/products/<%=product._id%>?_method=DELETE" method="POST">
-        <button>Delete</button>
-    </form> -->
+
+    <% if(user.username === "Admin") {%>
+        <a href="/item/<%=product._id%>">Edit Product</a>
+        <form action="/item/<%=product._id%>?_method=DELETE" method="POST">
+            <button>Delete</button>
+        </form>
+    <% } else {%>
+        <a href="">Add to Mycart</a>
+    <% } %>

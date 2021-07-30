@@ -2,6 +2,13 @@
 
     <div class="cointainer">
         <section id="home-page">
+
+            <% if(error && error.length){ %>
+                <% if(error === "Session expired"){ %>
+                    <%= error %>
+                <% } %>
+            <% } %>
+
             <div id="new">
                 <img src="css/img/mybagshop-white.png" class="img-fluid align-center a2img2" style="width: 20%;">
                 <form class="mx-auto" action="/login" method="POST">

@@ -1,12 +1,56 @@
 <% layout('template') %>
 
+    <%= success %> 
+    <h1>Hi <%= user.username %>...</h1>
+        <div>
+            <form action="/logout" method="POST">
+                <button>Log out</button>
+            </form>
+        </div>
+
+        <% if(user.username === "Admin"){ %> 
+            <div>
+                <form action="/additem" method="GET">
+                    <button>Add Item</button>
+                </form>
+            </div>
+        <% } else{%> 
+            <a href="">Mycart</a>
+        <% } %>
+
     <h1>
-        <%= category%> Products!
+        <% if(user.username === "Admin"){ %> 
+            Your Products
+        <% } else{%> 
+            <%= category%> Products!
+        <% } %> 
     </h1>
-    <% for(let product of products) { %>
-        <a href="/additem/<%= product._id %> "><img src="<%= product.image %> " alt=""></a>
-        <% }%>
-            <a href="/products/new">New Product</a>
-            <%if(category !=='All' ) {%>
-                <a href="/products">All Products</a>
+
+    <div>
+        <% if(productsMen.length + productsWomen.length) {%>
+            <h3>Men</h3>
+            <% if(productsMen.length){ %> 
+                <% for(let men of productsMen){ %>
+                    <a href="/showitem/<%= men._id %>">
+                        <img src="<%= men.image %> " alt="">
+                    </a>
                 <% } %>
+            <% } else{%>
+                <h4>Empty :(</h4>
+            <% } %>
+
+            <h3>Women</h3>
+            <% if(productsWomen.length) {%> 
+                <% for(let women of productsWomen){ %>
+                    <a href="/showitem/<%= women._id %> ">
+                        <img src="<%= women.image %> " alt="">
+                    </a>
+                <% } %>
+            <% } else{%>
+                <h4>Empty :(</h4>
+            <% } %> 
+        <% } else{%>
+            <h4>Empty :(</h4>
+        <% } %> 
+        
+    </div>

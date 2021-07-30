@@ -8,10 +8,12 @@ const Product = require('./models/product');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
 const LocalStrategy = require('passport-local');
+const passportLocalMongoose = require('passport-local-mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
 const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
+const methodOverride = require('method-override');
 
 const app = express();
 
@@ -19,8 +21,10 @@ app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.json())
+app.use(express.json());
+app.use(methodOverride('_method'));
 
+app.set('trust proxy',1);
 app.use(express.urlencoded({ extended: true }));
 const sessionConfig = {
     secret: 'secret',
@@ -36,6 +40,10 @@ app.use(session(sessionConfig));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+// passport.use(new LocalStrategy(Auth.authenticate()));
+
+// passport.serializeUser(Auth.serializeUser());
+// passport.deserializeUser(Auth.deserializeUser());
 
 app.use((req, res, next) => {
     res.locals.success = req.flash('success');
@@ -52,23 +60,6 @@ const requiredLogin = (req, res, next) => {
     }
     next();
 }
-
-const admin_pw = async (pw) => {
-    const hash = await bcrypt.hash(pw, 10);
-    const auth_user = new Auth({
-        username: "Admin",
-        password: hash
-    });
-    await auth_user.save();
-}
-admin_pw("admin1@mybag");
-
-app.get('/home_admin', requiredLogin, (req, res) => {
-    res.render('adminPage');
-})
-app.get('/home_user', requiredLogin, (req, res) => {
-    res.render('userPage');
-})
 
 app.listen(2000, async () => {
     console.log("listening to the port 2000!...");
