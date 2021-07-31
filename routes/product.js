@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const methodOverride = require('method-override');
+const { db } = require('../models/product');
 const Product = require('../models/product');
 const Auth = require('../models/user');
 
@@ -79,5 +80,55 @@ router.delete('/Mybag/deleteitem/:id', async (req, res) => {
 })
 
 //User Part
+//Add item to respective user cart
+router.get('/Mybag/addmycart/:id', async (req, res) => {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    await Auth.findByIdAndUpdate(
+        req.session.user_id, {
+        $addToSet: {
+            mycartArray: product._id
+        }
+    })
+    req.flash('success', "Item is added into Mycart successfully");
+    res.redirect(`/Mybag/showitem/${product._id}`)
+})
+
+//Mycart display
+router.get('/Mybag/showmycart', async (req, res) => {
+    const user = await Auth.findById(req.session.user_id);
+    var product = [];
+    var i=0;
+    for(let mycart of user.mycartArray){
+        product[i] = await Product.findById(mycart);
+        i+=1;
+    }
+    res.render('mycart', { user, product });
+})
+
+//Mycart particular item display
+router.get('/Mybag/mycart/:id', async (req, res) => {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    res.render('mycartShow', { product });
+})
+
+router.get('/Mybag/buy', (req, res) => {
+    res.send('You have bought this item successfully');
+})
+
+//Delete item from Mycart
+router.delete('/Mybag/mycart/deleteitem/:id', async (req, res) => {
+    const { id } = req.params;
+    const product = await Product.findById(id);
+    await Auth.findByIdAndUpdate(
+        req.session.user_id, {
+        $pull: {
+            mycartArray: product._id
+        }
+    })
+    req.flash('success', "Item from your cart is deleted successfully");
+    res.redirect('/Mybag/showmycart');
+})
 
 module.exports = router;

@@ -1,21 +1,22 @@
 <% layout('template') %>
 
   <div class="cointainer">
-    <section id="home-page">
-      <div id="new">
-        <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2" style="width: 20%;">
+    <section id="auth_home">
+      <div class="overlap">
+        <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white"
+          class="img-fluid align-center a2img2">
         <form class="mx-auto" action="/Mybag/register" method="POST">
           <div class="mb-3">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" id="username" name="username">
+            <label for="username" class="form-label my-2 mx-4">Username</label>
+            <input type="text" class="form-control" id="username" name="username" placeholder="Username">
           </div>
           <div class="mb-3">
-            <label for="password" class="form-label">Password</label>
-            <input type="password" class="form-control" id="password" name="password">
+            <label for="password" class="form-label my-2 mx-4">Password</label>
+            <input type="password" class="form-control" id="password" name="password" placeholder="Password">
           </div>
           <div class="mb-3">
-            <label for="reenterpassword" class="form-label">Renter Password</label>
-            <input type="password" class="form-control" id="reenterpassword" name="reenterpassword">
+            <label for="reenterpassword" class="form-label my-2 mx-4">Renter Password</label>
+            <input type="password" class="form-control" id="reenterpassword" name="reenterpassword" placeholder="Reenter the password">
           </div>
           <p class='error my-2 mx-2'>
             <% if(error && error.length){ %>
@@ -23,9 +24,14 @@
                 <% } %>
           </p>
           <button class="a1btn1 my-2" type="submit" class="btn btn-primary">Register</button>
-          <p class="a1text1 mx-2">Already have an account? <a href="/Mybag/login" style="text-decoration: none;">Login</a>
+          <p class="a1text1 mx-2">Already have an account? <a href="/Mybag/login">Login</a>
           </p>
         </form>
       </div>
+      <footer id="footer">
+        <div class="text-center">
+          <p>This mini project is developed as a part of sirius summer internship</p>
+        </div>
+      </footer>
     </section>
   </div>

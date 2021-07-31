@@ -1,0 +1,21 @@
+<% layout('template') %>
+    <h1>Hello <%= user.username %>... </h1>
+    <h3>
+        <a href="/Mybag/products" style="text-decoration:none;">
+            <b>&#8592</b>
+        </a>
+        This is your cart
+    </h3>
+
+    <%= success %> <br>
+
+    <% if(product.length) {%>
+        <% for(let mycart of product) {%>
+            <a href="/Mybag/mycart/<%= mycart._id%> " style="text-decoration:none;">
+                <img src="<%= mycart.image %> " alt="">
+            </a> 
+
+        <% } %>  
+    <% } else{ %>
+        <h4>Empty :(</h4>
+    <% } %>

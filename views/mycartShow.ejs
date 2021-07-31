@@ -1,8 +1,6 @@
 <% layout('template') %>
-
-    <%= success %> 
     <h1>
-        <a href="/Mybag/products" style="text-decoration:none;">
+        <a href="/Mybag/showmycart" style="text-decoration:none;">
             <b>&#8592</b>
         </a>
         <%= product.manufacturer%> product
@@ -23,15 +21,11 @@
             About: <%= product.about%>
         </li>
     </ul>
-
-    <% if(user.username === "Admin") {%>
-        <a href="/Mybag/edititem/<%=product._id%>">Edit Product</a>
-        <form action="/Mybag/deleteitem/<%=product._id%>?_method=DELETE" method="POST">
-            <button>Delete</button>
-        </form>
-    <% } else {%>
+    <div>
         <form action="/Mybag/buy" method="GET">
             <button>Buy Now</button>
         </form>
-        <a href="/Mybag/addmycart/<%= product._id %> ">Add to Mycart</a>
-    <% } %>
+        <form action="/Mybag/mycart/deleteitem/<%=product._id%>?_method=DELETE" method="POST">
+            <button>Delete from your cart</button>
+        </form>
+    </div>

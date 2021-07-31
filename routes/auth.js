@@ -4,6 +4,7 @@ const Auth = require('../models/user');
 const Product = require('../models/product');
 const bcrypt = require('bcrypt');
 const passport = require('passport');
+const { exists } = require('../models/user');
 
 const requiredLogin = (req, res, next) => {
     if (!req.session.user_id) {
@@ -24,6 +25,11 @@ router.get('/Mybag/register', (req, res) => {
 router.post('/Mybag/register', async (req, res) => {
     const { username, password, reenterpassword } = req.body;
     if (username && (password && reenterpassword)) {
+        const exists = await Auth.findOne({username: username})
+        if(exists) {
+            req.flash('error', "User already exists");
+            res.redirect('/Mybag/register');
+        }
         if (password !== reenterpassword) {
             req.flash('error', "Passwords should be match");
             res.redirect('/Mybag/register');

@@ -1,7 +1,7 @@
 <% layout('template') %>
 
     <div class="cointainer">
-        <section id="home-page">
+        <section id="auth_home">
 
             <% if(error && error.length){ %>
                 <% if(error === "Session expired"){ %>
@@ -9,26 +9,34 @@
                 <% } %>
             <% } %>
 
-            <div id="new">
-                <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2" style="width: 20%;">
+            <div class="overlap">
+                    <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
                 <form class="mx-auto" action="/Mybag/login" method="POST">
 
-                    <label for="Username" class="form-label my-2 mx-4">Username</label>
-                    <input type="text" class="form-control " id="Username" name="username">
+                    <div class="mb-3">
+                        <label for="Username" class="form-label my-2 mx-4">Username</label>
+                        <input type="text" class="form-control " id="Username" name="username" placeholder="Username">    
+                    </div>
 
-                    <label for="Password" class="form-label my-2 mx-4">Password</label>
-                    <input type="password" class="form-control " id="Password" name="password">
+                    <div class="mb-3">
+                        <label for="Password" class="form-label my-2 mx-4">Password</label>
+                        <input type="password" class="form-control " id="Password" name="password" placeholder="Password">
+                    </div>
                     <p class='error my-2 mx-2'>
                         <% if(error && error.length){ %>
                             <%= error %>
                                 <% } %>
                     </p>
-                    <button class="a1btn1 my-2">Login</button>
+                    <button class="a1btn1 my-2" class="btn btn-primary" type="submit">Login</button>
 
-                    <p class="a1text1 mx-2">New to MyBag.shop? <a href="/Mybag/register"
-                            style="text-decoration: none;">Register</a>
+                    <p class="a1text1 mx-2">New to MyBag.shop? <a href="/Mybag/register">Register</a>
                     </p>
                 </form>
             </div>
+            <footer id="footer">
+                <div class="text-center">
+                  <p>This mini project is developed as a part of sirius summer internship</p>
+                </div>
+              </footer>
         </section>
     </div>
