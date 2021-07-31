@@ -9,54 +9,75 @@ router.use(methodOverride('_method'));
 const categories = ['Men', 'Women'];
 const ratings = [5.0, 4.0, 3.0, 2.0, 1.0];
 
-router.get('/products', async (req, res) => {
+//index page redirectio which having available products
+router.get('/Mybag/products', async (req, res) => {
     const { category } = req.query;
     const user = await Auth.findById(req.session.user_id)
     if (category) {
         const products = await Product.find({ category })
         res.render('index', { user, products, category })
     } else {
-        const productsMen = await Product.find({category: "Men"})
-        const productsWomen = await Product.find({category: "Women"})
+        const productsMen = await Product.find({ category: "Men" })
+        const productsWomen = await Product.find({ category: "Women" })
         res.render('index', { user, productsMen, productsWomen, category: 'All' })
     }
 })
 
-router.get('/additem', (req, res) => {
+//Admin Part
+//Add item into MyBag.shop 
+router.get('/Mybag/additem', (req, res) => {
     res.render('addItems', { categories, ratings })
 })
-router.post('/additem', async (req, res) => {
-    const newProduct = new Product(req.body);
-    await newProduct.save();
-    req.flash('success', "Item is added successfully");
-    res.redirect(`/showitem/${newProduct._id}`)
+router.post('/Mybag/additem', async (req, res) => {
+    const { productName, manufacturer, category, rating, price, image, about } = req.body;
+    if (productName && manufacturer && category && rating && price && image && about) {
+        const newProduct = new Product({ productName, manufacturer, category, rating, price, image, about });
+        await newProduct.save();
+        req.flash('success', "Item is added successfully");
+        res.redirect(`/Mybag/showitem/${newProduct._id}`)
+    } else {
+        req.flash('error', "All fields required");
+        res.redirect('/Mybag/additem');
+    }
 })
 
-router.get('/showitem/:id', async (req, res) => {
+//Show page for particular product
+router.get('/Mybag/showitem/:id', async (req, res) => {
     const { id } = req.params;
     const user = await Auth.findById(req.session.user_id);
     const product = await Product.findById(id)
     res.render('show', { user, product })
 })
 
-router.get('/item/:id', async (req, res) => {
+//Edit particular item
+router.get('/Mybag/edititem/:id', async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
     res.render('edit', { product, categories, ratings })
 })
-
-router.put('/item/:id', async (req, res) => {
-    const { id } = req.params;
-    const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
-    req.flash('success', "Item updated successfully");
-    res.redirect(`/showitem/${product._id}`);
+router.put('/Mybag/edititem/:id', async (req, res) => {
+    const { productName, manufacturer, category, rating, price, image, about } = req.body;
+    if (productName && manufacturer && category && rating && price && image && about) {
+        const { id } = req.params;
+        const product = await Product.findByIdAndUpdate(id, req.body, { runValidators: true, new: true });
+        req.flash('success', "Item updated successfully");
+        res.redirect(`/Mybag/showitem/${product._id}`);
+    } else {
+        const { id } = req.params;
+        const product = await Product.findById(id);
+        req.flash('error', "All fields required");
+        res.redirect(`/Mybag/edititem/${product._id}`);
+    }
 })
 
-router.delete('/item/:id', async (req, res) => {
+//Delete particular item
+router.delete('/Mybag/deleteitem/:id', async (req, res) => {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
     req.flash('success', "Item deleted successfully");
-    res.redirect('/products');
+    res.redirect('/Mybag/products');
 })
+
+//User Part
 
 module.exports = router;

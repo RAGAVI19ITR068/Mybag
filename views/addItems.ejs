@@ -1,7 +1,7 @@
 <% layout('template') %>
 
     <h1>Add the product</h1>
-    <form action="/additem" method="POST">
+    <form action="/Mybag/additem" method="POST">
         <label for="itemname">Name</label><br>
         <input type="text" id="itemname" name="productName" placeholder="Enter Item Name"><br>
         <label for="manufacturerName">Manufacturer</label><br>
@@ -29,6 +29,11 @@
         <input type="text" id="image" name="image" placeholder="Enter Image URL"><br>
         <label for="about">About</label><br>
         <textarea id="about" name="about" rows="4" cols="50" placeholder="About Item"></textarea><br>
+        <p>
+            <% if(error && error.length) {%>
+                <%= error %> 
+            <% } %>  
+        </p><br>
         <button>ADD</button>
-        <a href="./adminPage.ejs" style="text-decoration: none;">CANCEL</a>
+        <a href="/Mybag/products" style="text-decoration: none;">CANCEL</a>
     </form>

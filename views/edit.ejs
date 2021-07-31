@@ -2,7 +2,7 @@
 
     <h1>Edit Product</h1>
 
-    <form action="/item/<%=product._id%>?_method=PUT" method="POST">
+    <form action="/Mybag/edititem/<%=product._id%>?_method=PUT" method="POST">
         <label for="itemname">Name</label><br>
         <input type="text" id="itemname" name="productName" placeholder="Enter Item Name"
             value="<%= product.productName%>"><br>
@@ -32,6 +32,11 @@
         <input type="text" id="image" name="image" placeholder="Enter Image URL" value="<%= product.image%>"><br>
         <label for="about">About</label><br>
         <textarea id="about" name="about" rows="4" cols="50" placeholder="About Item"><%= product.about%></textarea><br>
+        <p>
+            <% if(error && error.length) {%>
+                <%= error %> 
+            <% } %>  
+        </p><br>
         <button>Submit</button>
-        <a href="/showitem/<%=product._id%>" style="text-decoration: none;">Cancel</a>
+        <a href="/Mybag/showitem/<%=product._id%>" style="text-decoration: none;">Cancel</a>
     </form>

@@ -2,7 +2,7 @@
 
     <%= success %> 
     <h1>
-        <a href="/products" style="text-decoration:none;">
+        <a href="/Mybag/products" style="text-decoration:none;">
             <b>&#8592</b>
         </a>
         <%= product.manufacturer%> product
@@ -25,8 +25,8 @@
     </ul>
 
     <% if(user.username === "Admin") {%>
-        <a href="/item/<%=product._id%>">Edit Product</a>
-        <form action="/item/<%=product._id%>?_method=DELETE" method="POST">
+        <a href="/Mybag/edititem/<%=product._id%>">Edit Product</a>
+        <form action="/Mybag/deleteitem/<%=product._id%>?_method=DELETE" method="POST">
             <button>Delete</button>
         </form>
     <% } else {%>
