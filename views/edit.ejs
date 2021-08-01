@@ -1,42 +1,100 @@
 <% layout('template') %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="/css/form.css">
 
-    <h1>Edit Product</h1>
+    <div id="nav">
+        <div>
+            <form action="/Mybag/logout" method="POST">
+                <button id="logout">Log out</button>
+            </form>
+        </div>
+        <div id="profile"></div>
 
-    <form action="/Mybag/edititem/<%=product._id%>?_method=PUT" method="POST">
-        <label for="itemname">Name</label><br>
-        <input type="text" id="itemname" name="productName" placeholder="Enter Item Name"
-            value="<%= product.productName%>"><br>
-        <label for="manufacturerName">Manufacturer</label><br>
-        <input type="text" id="manufacturerName" name="manufacturer" placeholder="Enter Manufacturer Name"
-            value="<%= product.manufacturer%>"><br>
-        <label for="category">Category</label>
-        <select name="category" id="category">
-            <% for(let category of categories){ %>
-                <option value="<%=category%>" <%=product.category===category ? 'selected' : '' %>>
-                    <%=category%>
-                </option>
-                <% } %>
-        </select>
-        <label for="rating">Rating</label>
-        <select name="rating" id="rating">
-            <% for(let rating of ratings){ %>
-                <option value="<%=rating%>" <%=product.rating===rating ? 'selected' : '' %>>
-                    <%=rating%>
-                </option>
-                <% } %>
-        </select>
-        <label for="price">Price</label>
-        <input type="text" id="price" name="price" placeholder="Rs. 0.0" value="<%= product.price%>">
-        <br>
-        <label for="image">Image URL</label><br>
-        <input type="text" id="image" name="image" placeholder="Enter Image URL" value="<%= product.image%>"><br>
-        <label for="about">About</label><br>
-        <textarea id="about" name="about" rows="4" cols="50" placeholder="About Item"><%= product.about%></textarea><br>
-        <p>
-            <% if(error && error.length) {%>
-                <%= error %> 
-            <% } %>  
-        </p><br>
-        <button>Submit</button>
-        <a href="/Mybag/showitem/<%=product._id%>" style="text-decoration: none;">Cancel</a>
-    </form>
+        <span>
+            <%= user.username %>
+        </span>
+
+        <ul>
+            <li><a href="/Mybag/products">Home</a></li>
+            <li>
+                <% if(user.username==="Admin" ){ %>
+                    <a href="/Mybag/additem">Add Item</a>
+                    <% } else{%>
+                        <a href="/Mybag/showmycart">Mycart</a>
+                        <% } %>
+            </li>
+        </ul>
+        <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white"
+            class="img-fluid align-center a2img2">
+    </div>
+
+    <div class="index-body">
+        <%= success %>
+        <h2>Hello, <%= user.username %></h2>
+
+        <div class="idex-content">
+            <h4 style="padding: 7px 0px 0px 45px;">
+                <div class="left">
+                    <a href="/Mybag/showitem/<%= product._id %> " style="text-decoration:none;">
+                        <img src="/css/icon/left-arrow.png" alt="">
+                    </a>
+                </div>
+                UPDATE ITEM
+            </h4>
+            <form class="mx-auto" action="/Mybag/edititem/<%=product._id%>?_method=PUT" method="POST">
+                <div class="mb-1">
+                    <label for="itemname" class="form-label my-2 mx-4">Name</label><br>
+                    <input type="text" class="form-control" id="itemname" name="productName" placeholder="Enter Item Name" 
+                    value="<%= product.productName%>"><br>
+                
+                    <label for="manufacturerName" class="form-label my-2 mx-4">Manufacturer</label><br>
+                    <input type="text" class="form-control" id="manufacturerName" name="manufacturer" placeholder="Enter Manufacturer Name" 
+                    value="<%= product.manufacturer%>"><br>
+                </div>
+                <div class="single-line">
+                    <div class="mb-1">
+                        <label for="category" class="form-label my-2 mx-4">Category</label>
+                        <label for="rating" class="form-label my-2 mx-4">Rating</label>
+                        <label for="price" class="form-label my-2 mx-4" >Price</label>
+                    </div>
+                    <div class="mb-1">
+                        <select name="category" class="form-control" id="category">
+                            <% for(let category of categories){ %>
+                                <option value="<%=category%>" <%=product.category===category ? 'selected' : '' %>>
+                                    <%=category%>
+                                </option>
+                            <% } %>
+                        </select>
+
+                        <select name="rating" class="form-control" id="rating">
+                            <% for(let rating of ratings){ %>
+                                <option value="<%=rating%>" <%=product.rating===rating ? 'selected' : '' %>>
+                                    <%=rating%>
+                                </option>
+                            <% } %>
+                        </select>
+                        
+                        <input type="text" class="form-control" id="price" name="price" placeholder="10" value="<%= product.price%>"><br>
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <label for="image" class="form-label my-2 mx-4">Image URL</label><br>
+                    <input type="text" class="form-control" id="image" name="image" placeholder="Enter Image URL" value="<%= product.image%>"><br>
+                </div>
+                <div>
+                    <label for="about" class="form-label my-2 mx-4">About</label><br>
+                    <input id="about" class="form-control" name="about" rows="4" cols="50" placeholder="About Item" value="<%= product.about%>"><br>
+                </div>
+                <p class='error my-2 mx-2'>
+                    <% if(error && error.length) {%>
+                        <%= error %>
+                    <% } %>
+                </p><br>
+                <div>
+                    <button class="form-button" type="submit">UPDATE</button>
+                    <a id="cancel" href="/Mybag/showitem/<%=product._id%>" style="text-decoration: none;">CANCEL</a>
+                </div>
+            </form>
+        </div>
+
+    </div>

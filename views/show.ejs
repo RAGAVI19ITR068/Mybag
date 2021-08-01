@@ -1,37 +1,76 @@
 <% layout('template') %>
+<link rel="stylesheet" href="/css/index.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <div id="nav">
+        <div>
+            <form action="/Mybag/logout" method="POST">
+                <button id="logout">Log out</button>
+            </form>
+        </div>
+        <div id="profile"></div>
+        
+        <span><%= user.username %></span>
 
-    <%= success %> 
-    <h1>
-        <a href="/Mybag/products" style="text-decoration:none;">
-            <b>&#8592</b>
-        </a>
-        <%= product.manufacturer%> product
-    </h1>
-    <ul>
-        <img src="<%= product.image%>" alt="">
-        <li>Name: <%= product.productName%>
-        </li>
-        <li>Manufacturer: <%= product.manufacturer%>
-        </li>
-        <li>Category: <%= product.category%>
-        </li>
-        <li>Rating: <%= product.rating%>
-        </li>
-        <li>Price: Rs.<%= product.price%>
-        </li>
-        <li>
-            About: <%= product.about%>
-        </li>
-    </ul>
+        <ul>
+            <li><a href="/Mybag/products" >Home</a></li>
+            <li>
+                <% if(user.username === "Admin"){ %> 
+                    <a href="/Mybag/additem">Add Item</a>
+                <% } else{%> 
+                    <a href="/Mybag/showmycart">Mycart</a>
+                <% } %>
+            </li>
+        </ul>
+        <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
+    </div>
 
-    <% if(user.username === "Admin") {%>
-        <a href="/Mybag/edititem/<%=product._id%>">Edit Product</a>
-        <form action="/Mybag/deleteitem/<%=product._id%>?_method=DELETE" method="POST">
-            <button>Delete</button>
-        </form>
-    <% } else {%>
-        <form action="/Mybag/buy" method="GET">
-            <button>Buy Now</button>
-        </form>
-        <a href="/Mybag/addmycart/<%= product._id %> ">Add to Mycart</a>
-    <% } %>
+    <div class="index-body">
+        <%= success %> 
+        <h2>Hello, <%= user.username %></h2>
+    
+        <div class="idex-content">
+            <h4 style="padding: 25px 0px 0px 50px;">
+                <a href="/Mybag/products" style="text-decoration:none;">
+                    <div class="left">
+                        <img src="/css/icon/left-arrow.png" alt="">
+                    </div>
+                </a>
+                ITEM DETAILS
+            </h4>
+            <div style="float: right; margin: 30px 250px 0 0;">
+                <% if(user.username === "Admin") {%>
+                    <div class="edit" style="margin-bottom: 25px;">
+                        <a href="/Mybag/edititem/<%=product._id%>" style="text-decoration:none;">
+                            <img src="/css/icon/pencil.png" alt="">
+                        </a>
+                    </div>
+                    
+                    <form action="/Mybag/deleteitem/<%=product._id%>?_method=DELETE" method="POST">
+                        <button class="del"> <img src="/css/icon/delete.png" alt=""> </button>
+                    </form>
+                <% } else {%>
+                    <form action="/Mybag/addmycart/<%= product._id %> " method="GET">
+                        <button> <img src="/css/icon/shopping-bag.png" alt=""> BUY</button>
+                    </form>
+                <% } %> 
+            </div>
+            <div id="item-show">
+                <img src="<%= product.image%>" alt="">
+                <div>
+                        <h4> <%= product.productName%> </h4> 
+                        <p style="line-height: 40px;"> By <%= product.manufacturer%> <br> Rating: <%= product.rating%> <br></p>
+    
+                        <div id="show-price">
+                            <p> $<%= product.price%> </p>
+                        </div>
+                </div>
+                
+                <div>
+                    <span>ABOUT ITEM</span><br>
+                    <p style="margin: 20px 0;"> <%= product.about%> </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>

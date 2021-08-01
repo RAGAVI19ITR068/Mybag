@@ -1,39 +1,91 @@
 <% layout('template') %>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/form.css">
 
-    <h1>Add the product</h1>
-    <form action="/Mybag/additem" method="POST">
-        <label for="itemname">Name</label><br>
-        <input type="text" id="itemname" name="productName" placeholder="Enter Item Name"><br>
-        <label for="manufacturerName">Manufacturer</label><br>
-        <input type="text" id="manufacturerName" name="manufacturer" placeholder="Enter Manufacturer Name"><br>
-        <label for="category">Category</label>
-        <select name="category" id="category">
-            <% for(let category of categories){ %>
-                <option value="<%=category%>">
-                    <%=category%>
-                </option>
+    <div id="nav">
+        <div>
+            <form action="/Mybag/logout" method="POST">
+                <button id="logout">Log out</button>
+            </form>
+        </div>
+        <div id="profile"></div>
+
+        <span>
+            <%= user.username %>
+        </span>
+
+        <ul>
+            <li><a href="/Mybag/products">Home</a></li>
+            <li>
+                <% if(user.username==="Admin" ){ %>
+                    <a href="/Mybag/additem">Add Item</a>
+                <% } else{%>
+                    <a href="/Mybag/showmycart">Mycart</a>
                 <% } %>
-        </select>
-        <label for="rating">Rating</label>
-        <select name="rating" id="rating">
-            <% for(let rating of ratings){ %>
-                <option value="<%=rating%>">
-                    <%=rating%>
-                </option>
-                <% } %>
-        </select>
-        <label for="price">Price</label>
-        <input type="text" id="price" name="price" placeholder="10">
-        <br>
-        <label for="image">Image URL</label><br>
-        <input type="text" id="image" name="image" placeholder="Enter Image URL"><br>
-        <label for="about">About</label><br>
-        <textarea id="about" name="about" rows="4" cols="50" placeholder="About Item"></textarea><br>
-        <p>
-            <% if(error && error.length) {%>
-                <%= error %> 
-            <% } %>  
-        </p><br>
-        <button>ADD</button>
-        <a href="/Mybag/products" style="text-decoration: none;">CANCEL</a>
-    </form>
+            </li>
+        </ul>
+        <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
+    </div>
+
+    <div class="index-body">
+        <%= success %>
+        <h2>Hello, <%= user.username %></h2>
+
+        <div class="idex-content">
+            <h4 style="padding: 7px 0px 0px 45px;">ADD ITEM</h4>
+            <form class="mx-auto" action="/Mybag/additem" method="POST">
+                <div class="mb-1">
+                    <label for="itemname" class="form-label my-2 mx-4">Name</label><br>
+                    <input type="text" class="form-control" id="itemname" name="productName" placeholder="Enter Item Name"><br>
+                
+                    <label for="manufacturerName" class="form-label my-2 mx-4">Manufacturer</label><br>
+                    <input type="text" class="form-control" id="manufacturerName" name="manufacturer" placeholder="Enter Manufacturer Name"><br>
+                </div>
+                <div class="single-line">
+                    <div class="mb-1">
+                        <label for="category" class="form-label my-2 mx-4">Category</label>
+                        <label for="rating" class="form-label my-2 mx-4">Rating</label>
+                        <label for="price" class="form-label my-2 mx-4" >Price</label>
+                    </div>
+                    <div class="mb-1">
+                        <select name="category" class="form-control" id="category">
+                            <% for(let category of categories){ %>
+                                <option value="<%=category%>">
+                                    <%=category%>
+                                </option>
+                            <% } %>
+                        </select>
+
+                        <select name="rating" class="form-control" id="rating">
+                            <% for(let rating of ratings){ %>
+                                <option value="<%=rating%>">
+                                    <%=rating%>
+                                </option>
+                            <% } %>
+                        </select>
+                        
+                        <input type="text" class="form-control" id="price" name="price" placeholder="10">
+                    </div>
+                </div>
+                
+                <div class="mb-1">
+                    <label for="image" class="form-label my-2 mx-4">Image URL</label><br>
+                    <input type="text" class="form-control" id="image" name="image" placeholder="Enter Image URL"><br>
+                </div>
+                <div>
+                    <label for="about" class="form-label my-2 mx-4">About</label><br>
+                    <input id="about" class="form-control" name="about" rows="4" cols="50" placeholder="About Item"><br>
+                </div>
+                <p class='error my-2 mx-2'>
+                    <% if(error && error.length) {%>
+                        <%= error %>
+                    <% } %>
+                </p><br>
+                <div>
+                    <button class="form-button" type="submit">ADD</button>
+                    <a id="cancel" href="/Mybag/products" style="text-decoration: none;">CANCEL</a>
+                </div>
+            </form>
+        </div>
+
+    </div>

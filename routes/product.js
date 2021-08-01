@@ -26,8 +26,9 @@ router.get('/Mybag/products', async (req, res) => {
 
 //Admin Part
 //Add item into MyBag.shop 
-router.get('/Mybag/additem', (req, res) => {
-    res.render('addItems', { categories, ratings })
+router.get('/Mybag/additem', async (req, res) => {
+    const user = await Auth.findById(req.session.user_id);
+    res.render('addItems', { user, categories, ratings })
 })
 router.post('/Mybag/additem', async (req, res) => {
     const { productName, manufacturer, category, rating, price, image, about } = req.body;
@@ -53,8 +54,9 @@ router.get('/Mybag/showitem/:id', async (req, res) => {
 //Edit particular item
 router.get('/Mybag/edititem/:id', async (req, res) => {
     const { id } = req.params;
+    const user = await Auth.findById(req.session.user_id);
     const product = await Product.findById(id);
-    res.render('edit', { product, categories, ratings })
+    res.render('edit', { user, product, categories, ratings })
 })
 router.put('/Mybag/edititem/:id', async (req, res) => {
     const { productName, manufacturer, category, rating, price, image, about } = req.body;
