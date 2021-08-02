@@ -2,26 +2,20 @@
     <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="/css/form.css">
 
-    <div id="nav">
+    <div id="nav" >
         <div>
             <form action="/Mybag/logout" method="POST">
-                <button id="logout">Log out</button>
+                <button id="logout">LOGOUT</button>
             </form>
         </div>
         <div id="profile"></div>
-
-        <span>
-            <%= user.username %>
-        </span>
+        
+        <span><%= user.username %></span>
 
         <ul>
-            <li><a href="/Mybag/products">Home</a></li>
+            <li><a href="/Mybag/products" >HOME</a></li>
             <li>
-                <% if(user.username==="Admin" ){ %>
-                    <a href="/Mybag/additem">Add Item</a>
-                <% } else{%>
-                    <a href="/Mybag/showmycart">Mycart</a>
-                <% } %>
+                <a href="/Mybag/additem" style="color: #237DB6;">ADD ITEM</a>
             </li>
         </ul>
         <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
@@ -31,7 +25,7 @@
         <%= success %>
         <h2>Hello, <%= user.username %></h2>
 
-        <div class="idex-content">
+        <div class="index-content">
             <h4 style="padding: 7px 0px 0px 45px;">ADD ITEM</h4>
             <form class="mx-auto" action="/Mybag/additem" method="POST">
                 <div class="mb-1">

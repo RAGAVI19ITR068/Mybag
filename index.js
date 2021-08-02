@@ -38,8 +38,8 @@ const sessionConfig = {
 }
 app.use(session(sessionConfig));
 app.use(flash());
-app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.initialize());
+// app.use(passport.session());
 // passport.use(new LocalStrategy(Auth.authenticate()));
 
 // passport.serializeUser(Auth.serializeUser());

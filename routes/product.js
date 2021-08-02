@@ -110,9 +110,10 @@ router.get('/Mybag/showmycart', async (req, res) => {
 
 //Mycart particular item display
 router.get('/Mybag/mycart/:id', async (req, res) => {
+    const user = await Auth.findById(req.session.user_id);
     const { id } = req.params;
     const product = await Product.findById(id);
-    res.render('mycartShow', { product });
+    res.render('mycartShow', { user, product });
 })
 
 router.get('/Mybag/buy', (req, res) => {

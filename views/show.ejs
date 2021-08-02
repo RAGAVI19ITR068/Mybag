@@ -1,37 +1,45 @@
 <% layout('template') %>
 <link rel="stylesheet" href="/css/index.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-    <div id="nav">
-        <div>
-            <form action="/Mybag/logout" method="POST">
-                <button id="logout">Log out</button>
-            </form>
-        </div>
-        <div id="profile"></div>
-        
-        <span><%= user.username %></span>
-
-        <ul>
-            <li><a href="/Mybag/products" >Home</a></li>
-            <li>
-                <% if(user.username === "Admin"){ %> 
-                    <a href="/Mybag/additem">Add Item</a>
-                <% } else{%> 
-                    <a href="/Mybag/showmycart">Mycart</a>
-                <% } %>
-            </li>
-        </ul>
-        <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
+<div id="nav" >
+    <div>
+        <form action="/Mybag/logout" method="POST">
+            <button id="logout">LOGOUT</button>
+        </form>
     </div>
+    <div id="profile"></div>
+    
+    <span><%= user.username %></span>
+
+    <ul>
+        <li><a href="/Mybag/products" >HOME</a></li>
+        <li>
+            <% if(user.username === "Admin"){ %> 
+                <a href="/Mybag/additem">ADD ITEM</a>
+            <% } else{%> 
+                <a href="/Mybag/showmycart">
+                    MY BAG 
+                    <% if(user.mycartArray.length){ %>
+                        <sup style="width: 20px; height: 20px; background-color: #EF7D21; 
+                        color: white; border-radius: 50%; padding: 1px 5px;">
+                            <%= user.mycartArray.length %> 
+                        </sup>
+                    <% } %> 
+                </a>
+            <% } %>
+        </li>
+    </ul>
+    <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
+</div>
 
     <div class="index-body">
         <%= success %> 
         <h2>Hello, <%= user.username %></h2>
     
-        <div class="idex-content">
+        <div class="index-content">
             <h4 style="padding: 25px 0px 0px 50px;">
                 <a href="/Mybag/products" style="text-decoration:none;">
-                    <div class="left">
+                    <div class="icon">
                         <img src="/css/icon/left-arrow.png" alt="">
                     </div>
                 </a>
@@ -39,35 +47,46 @@
             </h4>
             <div style="float: right; margin: 30px 250px 0 0;">
                 <% if(user.username === "Admin") {%>
-                    <div class="edit" style="margin-bottom: 25px;">
+                    <div class="icon" style="margin-bottom: 25px;">
                         <a href="/Mybag/edititem/<%=product._id%>" style="text-decoration:none;">
                             <img src="/css/icon/pencil.png" alt="">
                         </a>
                     </div>
                     
                     <form action="/Mybag/deleteitem/<%=product._id%>?_method=DELETE" method="POST">
-                        <button class="del"> <img src="/css/icon/delete.png" alt=""> </button>
+                        <button class="icon"> <img src="/css/icon/delete.png" alt=""> </button>
                     </form>
-                <% } else {%>
-                    <form action="/Mybag/addmycart/<%= product._id %> " method="GET">
-                        <button> <img src="/css/icon/shopping-bag.png" alt=""> BUY</button>
-                    </form>
-                <% } %> 
+                <% }%> 
             </div>
             <div id="item-show">
-                <img src="<%= product.image%>" alt="">
+                <img src="<%= product.image%>" alt="">  
                 <div>
                         <h4> <%= product.productName%> </h4> 
-                        <p style="line-height: 40px;"> By <%= product.manufacturer%> <br> Rating: <%= product.rating%> <br></p>
+                        <p style="line-height: 40px;"> By <%= product.manufacturer%> <br> 
+                            <% for(let i=0;i<product.rating;i++){ %>
+                                <span class="dot" style="background-color: #EF7D21;"></span>
+                            <% } %>
+                            <% for(let i=product.rating;i<5;i++){ %>
+                                <span class="dot" style="background-color: white;"></span>
+                            <% } %><br>
+                        </p>
     
                         <div id="show-price">
                             <p> $<%= product.price%> </p>
-                        </div>
+                        </div> 
                 </div>
-                
+                <div>
+                    <% if(user.username !== "Admin"){ %>
+                        <form action="/Mybag/addmycart/<%= product._id %> " method="GET">
+                            <button class="buy"> <img src="/css/icon/shopping-bag.png" alt="" style="width: 20px; height: 20px;"> BUY</button>
+                        </form>
+                    <% } %> 
+                </div>
                 <div>
                     <span>ABOUT ITEM</span><br>
-                    <p style="margin: 20px 0;"> <%= product.about%> </p>
+                    <p style="margin: 20px 0;"> <%= product.about%> <br> Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                         Cumque voluptates, mollitia hic quaerat, possimus voluptas sapiente numquam s
+                        oluta ex sint reiciendis id eveniet, facere dolorem corrupti iusto recusandae odio atque.</p>
                 </div>
             </div>
 

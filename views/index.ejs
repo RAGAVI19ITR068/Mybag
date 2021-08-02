@@ -1,10 +1,16 @@
 <% layout('template') %>
     <link rel="stylesheet" href="/css/index.css">
 
-    <div id="nav">
+    <% if(user.username === "Admin"){ %>
+        <% var nav_id = "nav-admin" %>
+    <% } else{ %>
+        <% var nav_id = "nav-user" %>
+    <% } %>   
+     
+    <div id="nav" >
         <div>
             <form action="/Mybag/logout" method="POST">
-                <button id="logout">Log out</button>
+                <button id="logout">LOGOUT</button>
             </form>
         </div>
         <div id="profile"></div>
@@ -12,69 +18,155 @@
         <span><%= user.username %></span>
 
         <ul>
-            <li><a href="/Mybag/products" >Home</a></li>
+            <li><a href="/Mybag/products" style="color: #237DB6;">HOME</a></li>
             <li>
                 <% if(user.username === "Admin"){ %> 
-                    <a href="/Mybag/additem">Add Item</a>
+                    <a href="/Mybag/additem">ADD ITEM</a>
                 <% } else{%> 
-                    <a href="/Mybag/showmycart">Mycart</a>
+                    <a href="/Mybag/showmycart">
+                        MY BAG 
+                        <% if(user.mycartArray.length){ %>
+                            <sup style="width: 20px; height: 20px; background-color: #EF7D21; 
+                            color: white; border-radius: 50%; padding: 1px 5px;">
+                                <%= user.mycartArray.length %> 
+                            </sup>
+                        <% } %> 
+                    </a>
                 <% } %>
             </li>
         </ul>
         <img src="https://i.ibb.co/9pQqkyj/mybagshop-white.png" alt="mybagshop-white" class="img-fluid align-center a2img2">
     </div>
 
-    <div class="index-body">
+    <% if(user.username === "Admin"){ %>
+        <% var index_id = "index-admin" %>
+        <% var content_id = "admin-content" %> 
+    <% } else{ %>
+        <% var index_id = "index-user" %>
+        <% var content_id = "user-content" %> 
+    <% } %>
+
+    <div class="index-body" >
         <%= success %> 
         <h2>Hello, <%= user.username %></h2>
     
-        <div class="idex-content">
-            <% if(productsMen.length + productsWomen.length) {%>
-                <h3>Men</h3>
-                <% if(productsMen.length){ %> 
-                    <% for(let men of productsMen){ %>
-                        <a href="/Mybag/showitem/<%= men._id %>" style="text-decoration:none;">
-                            <img src="<%= men.image %> " alt="" class="item">
-                        </a>
-                    <% } %>
-                <% } else{%>
-                    <h4>Empty :(</h4>
-                    <% if(user.username === "Admin"){ %> 
-                        <div>
-                            <form action="/Mybag/additem" method="GET">
-                                <button>Add Item</button>
-                            </form>
+        <div class="index-content">
+            <div>
+                <% if(productsMen.length + productsWomen.length) {%>
+                    <h4 style="padding: 11px 0 8px 0; margin: 8px 0 0 30px;">MEN</h4>
+                    <% if(productsMen.length){ %> 
+                        <div class="item-flex">
+                            <% for(let men of productsMen){ %>
+                                <div class="item-single">
+                                    <div id="show-price" style="position: absolute !important;margin: 11.35rem 0 0 1.6rem;">
+                                        <p> $<%= men.price%> </p>
+                                    </div>
+                                    <a href="/Mybag/showitem/<%= men._id %>" style="text-decoration:none;">
+                                        <img src="<%= men.image %> " alt="" class="item">
+                                    </a>
+                                    <div>
+                                        <% var name = men.productName %> 
+                                        <% if(name.length > 20){ %>
+                                            <p style="color: white;text-align: center;"> <%= name.slice(0,20) %>... </p>
+                                        <% } else{%>
+                                            <p style="color: white;text-align: center;"> <%= name %> </p>
+                                        <% } %>
+                                    </div>
+                                    <div style="font: 10px Open Sans !important;; letter-spacing: 0.14px;padding: 0 22px">
+                                        <% var name = men.manufacturer %> 
+                                        <% if(name.length > 10){ %>
+                                            <span style="color: white;float: left;">By <%= name.slice(0,10) %>... </span>
+                                            <span style="color: #EF7D21;float: right;">Rating <%= men.rating %> </span>
+                                        <% } else{%>
+                                            <span style="color: white;float: left;">By <%= name %> </span>
+                                            <span style="color: #EF7D21;float: right;">Rating <%= men.rating %> </span>
+                                        <% } %>
+                                    </div> 
+                                </div>
+                            <% } %>
                         </div>
-                    <% }%>
+                    <% } else{%>
+                        <div class="empty" style="width: 30rem;height: max-content;">
+                            <img src="/css/icon/empty.png" alt="Empty" style="width: 70px;height: 80px; margin: 40px 0 10px 190px;"><br>
+                            <% if(user.username === "Admin"){ %>
+                                <p class="emp">STORE FOR MEN IS EMPTY</p> 
+                                <div>
+                                    <form action="/Mybag/additem" method="GET" style="margin: 1.3rem 9.2rem;">
+                                        <p>Add items to it now.</p>
+                                        <button>ADD ITEM</button>
+                                    </form>
+                                </div>
+                            <% } else{%>
+                                <p class="emp">NO PRODUCTS ARE AVAILABLE <br> IN MEN STORE AT THIS MOMENT</p>
+                            <% } %>
+                        </div>
+                    <% } %>
+        
+                    <h4 style="padding: 11px 0 8px 0; margin: 8px 0 0 30px;">WOMEN</h4>
+                    <% if(productsWomen.length) {%> 
+                        <div class="item-flex">
+                            <% for(let women of productsWomen){ %>
+                                <div class="item-single">
+                                    <a href="/Mybag/showitem/<%= women._id %> " style="text-decoration:none;">
+                                        <div id="show-price" style="position: absolute !important;margin: 11.5rem 0 0 1.6rem;">
+                                            <p> $<%= women.price%> </p>
+                                        </div>
+                                        <img src="<%=women.image %> " alt="" class="item">
+                                    </a>
+                                    <div>
+                                        <% var name = women.productName %> 
+                                        <% if(name.length > 20){ %>
+                                            <p style="color: white;text-align: center;"> <%= name.slice(0,20) %>... </p>
+                                        <% } else{%>
+                                            <p style="color: white;text-align: center;"> <%= name %> </p>
+                                        <% } %>
+                                    </div>
+                                    <div style="font: 10px Open Sans !important;; letter-spacing: 0.14px;padding: 0 22px">
+                                        <% var name = women.manufacturer %> 
+                                        <% if(name.length > 10){ %>
+                                            <span style="color: white;float: left;">By <%= name.slice(0,10) %>... </span>
+                                            <span style="color: #EF7D21;float: right;">Rating <%= women.rating %> </span>
+                                        <% } else{%>
+                                            <span style="color: white;float: left;">By <%= name %> </span>
+                                            <span style="color: #EF7D21;float: right;">Rating <%= women.rating %> </span>
+                                        <% } %>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } else{%>
+                        <div class="empty" style="width: 30rem;height: max-content;">
+                            <img src="/css/icon/empty.png" alt="Empty" style="width: 70px;height: 80px; margin: 40px 0 10px 190px;"><br>
+                            <% if(user.username === "Admin"){ %>
+                                <p class="emp">STORE FOR WOMEN IS EMPTY</p> 
+                                <div>
+                                    <form action="/Mybag/additem" method="GET" style="margin: 1.3rem 9.2rem;">
+                                        <p>Add items to it now.</p>
+                                        <button>ADD ITEM</button>
+                                    </form>
+                                </div>
+                            <% } else{%>
+                                <p class="emp">NO PRODUCTS ARE AVAILABLE <br> IN WOMEN STORE AT THIS MOMENT</p>
+                            <% } %>
+                        </div>
+                    <% } %> 
+                <% } else{%>
+                    <div class="empty" style="width: 39rem;height: max-content;">
+                        <img src="/css/icon/empty.png" alt="Empty"><br>
+                        <% if(user.username === "Admin"){ %>
+                            <p class="emp">YOUR STORE IS EMPTY</p> 
+                            <div>
+                                <form action="/Mybag/additem" method="GET">
+                                    <p>Add items to it now.</p>
+                                    <button>ADD ITEM</button>
+                                </form>
+                            </div>
+                        <% } else{%>
+                            <p class="emp">NO PRODUCTS ARE AVAILABLE <br> AT THIS MOMENT</p>
+                        <% } %>
+                    </div>    
                 <% } %>
-    
-                <h3>Women</h3>
-                <% if(productsWomen.length) {%> 
-                    <% for(let women of productsWomen){ %>
-                        <a href="/Mybag/showitem/<%= women._id %> " style="text-decoration:none;">
-                            <img src="<%= women.image %> " alt="" class="item">
-                        </a>
-                    <% } %>
-                <% } else{%>
-                    <h4>Empty :(</h4>
-                    <% if(user.username === "Admin"){ %> 
-                        <div>
-                            <form action="/Mybag/additem" method="GET">
-                                <button>Add Item</button>
-                            </form>
-                        </div>
-                    <% }%>
-                <% } %> 
-            <% } else{%>
-                <h4>Empty :(</h4>
-                <% if(user.username === "Admin"){ %> 
-                    <div>
-                        <form action="/Mybag/additem" method="GET">
-                            <button>Add Item</button>
-                        </form>
-                    </div>
-                <% }%>
-            <% } %> 
+            </div> 
             
         </div>
 
