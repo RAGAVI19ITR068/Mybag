@@ -78,7 +78,15 @@
                 <div>
                     <% if(user.username !== "Admin"){ %>
                         <form action="/Mybag/addmycart/<%= product._id %> " method="GET">
-                            <button class="buy"> <img src="/css/icon/shopping-bag.png" alt="" style="width: 20px; height: 20px;"> BUY</button>
+                            <button class="buy">
+                                <% if(user.mycartArray.includes(product._id)){ %>
+                                    <img src="/css/icon/tick.png" alt="" style="width: 20px; height: 20px;">
+                                    <p style="float: right !important;margin: 5px 25px 0 0;">ADDED</p>
+                                <% } else{ %>
+                                    <img src="/css/icon/shopping-bag.png" alt="" style="width: 20px; height: 20px;">
+                                    <p style="float: right !important;margin: 5px 25px 0 0;">BUY</p>
+                                <% } %>
+                            </button>
                         </form>
                     <% } %> 
                 </div>

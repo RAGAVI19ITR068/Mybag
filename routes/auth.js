@@ -30,6 +30,10 @@ router.post('/Mybag/register', async (req, res) => {
             req.flash('error', "User already exists");
             res.redirect('/Mybag/register');
         }
+        if(password.length < 6){
+            req.flash('error', "Passwords should be atleast 6 characters");
+            res.redirect('/Mybag/register');
+        }
         if (password !== reenterpassword) {
             req.flash('error', "Passwords should be match");
             res.redirect('/Mybag/register');

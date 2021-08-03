@@ -63,7 +63,13 @@
                         </div>
                     <% } %>  
                 <% } else{ %>
-                    <h4>Empty :(</h4>
+                    <div class="empty" style="width: 39rem;height: max-content;">
+                        <img src="/css/icon/bag-empty.png" alt="Empty" style="height: 150px;"><br> 
+                        <form action="/Mybag/products" method="GET">
+                            <p>Add items to it now.</p>
+                            <button>SHOP NOW</button>
+                        </form>
+                    </div>
                 <% } %>
                 
             </div>
@@ -71,7 +77,7 @@
                 <footer id="footer">
                     <span class="text-left">Thank You For Shopping With Us!</span>
                     <span style="margin: 0 80px;"></span>
-                    <span class="text-center">Your Total Purchase</span>
+                    <span class="text-center" style="color: black !important;">Your Total Purchase</span>
                 </footer>
                 <div id="show-price" style="background-color: #237DB6; float: right; margin: 36.25rem 20rem 0 0;">
                     <p> $<%= total%> </p>

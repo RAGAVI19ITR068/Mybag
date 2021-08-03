@@ -53,12 +53,16 @@
         <div class="index-content">
             <div>
                 <% if(productsMen.length + productsWomen.length) {%>
-                    <h4 style="padding: 11px 0 8px 0; margin: 8px 0 0 30px;">MEN</h4>
+                    <% if(user.username === "Admin"){ %> 
+                        <h4 style="padding: 11px 0 8px; margin: 8px 0 0 30px;">MEN</h4>
+                    <% } else{%> 
+                        <h4 style="padding: 6px 0 5px; margin: 6px 0 0 30px;">MEN</h4>
+                    <% } %>  
                     <% if(productsMen.length){ %> 
                         <div class="item-flex">
                             <% for(let men of productsMen){ %>
                                 <div class="item-single">
-                                    <div id="show-price" style="position: absolute !important;margin: 11.35rem 0 0 1.6rem;">
+                                    <div id="show-price" style="position: absolute !important;margin: 10.6rem 0 0 1.6rem;">
                                         <p> $<%= men.price%> </p>
                                     </div>
                                     <a href="/Mybag/showitem/<%= men._id %>" style="text-decoration:none;">
@@ -72,16 +76,30 @@
                                             <p style="color: white;text-align: center;"> <%= name %> </p>
                                         <% } %>
                                     </div>
-                                    <div style="font: 10px Open Sans !important;; letter-spacing: 0.14px;padding: 0 22px">
+                                    <div style="font: 10px Open Sans !important;padding: 0 22px">
                                         <% var name = men.manufacturer %> 
                                         <% if(name.length > 10){ %>
-                                            <span style="color: white;float: left;">By <%= name.slice(0,10) %>... </span>
-                                            <span style="color: #EF7D21;float: right;">Rating <%= men.rating %> </span>
+                                            <p style="color: white;float: left;">By <%= name.slice(0,10) %>... </p>
+                                            <p style="color: #EF7D21;float: right;">Rating <%= men.rating %> </p>
                                         <% } else{%>
-                                            <span style="color: white;float: left;">By <%= name %> </span>
-                                            <span style="color: #EF7D21;float: right;">Rating <%= men.rating %> </span>
+                                            <p style="color: white;float: left;">By <%= name %> </p>
+                                            <p style="color: #EF7D21;float: right;">Rating <%= men.rating %> </p>
                                         <% } %>
                                     </div> 
+                                    <% if(user.username !== "Admin"){ %>
+                                        <form action="/Mybag/addmycart/<%= men._id %> " method="GET">
+                                            <button class="buy" style="width: 120px;height: 30px;position: absolute;margin-top: 28px;left: 50px;">
+                                                <% if(user.mycartArray.includes(men._id)){ %>
+                                                    <img src="/css/icon/tick.png" alt="" 
+                                                    style="width: 15px;height: 15px;position: absolute;bottom: 5px;left: 0">
+                                                    <p style="float: right !important;margin-right: 10px;">ADDED</p>
+                                                <% } else{ %>
+                                                    <img src="/css/icon/shopping-bag.png" alt="" 
+                                                    style="width: 15px;height: 15px;position: absolute;bottom: 5px;left: 3px">
+                                                    <p style="float: right !important;margin-right: 22px;">BUY</p>
+                                                <% } %>
+                                        </form>
+                                    <% } %>
                                 </div>
                             <% } %>
                         </div>
@@ -101,16 +119,20 @@
                             <% } %>
                         </div>
                     <% } %>
-        
-                    <h4 style="padding: 11px 0 8px 0; margin: 8px 0 0 30px;">WOMEN</h4>
+                
+                    <% if(user.username === "Admin"){ %> 
+                        <h4 style="padding: 11px 0 8px 0; margin: 8px 0 0 30px;">WOMEN</h4>
+                    <% } else{%> 
+                        <h4 style="padding: 18px 0 5px; margin: 19px 0 0 30px;">WOMEN</h4>
+                    <% } %>
                     <% if(productsWomen.length) {%> 
                         <div class="item-flex">
                             <% for(let women of productsWomen){ %>
                                 <div class="item-single">
+                                    <div id="show-price" style="position: absolute !important;margin: 10.7rem 0 0 1.6rem;">
+                                        <p> $<%= women.price%> </p>
+                                    </div>
                                     <a href="/Mybag/showitem/<%= women._id %> " style="text-decoration:none;">
-                                        <div id="show-price" style="position: absolute !important;margin: 11.5rem 0 0 1.6rem;">
-                                            <p> $<%= women.price%> </p>
-                                        </div>
                                         <img src="<%=women.image %> " alt="" class="item">
                                     </a>
                                     <div>
@@ -131,6 +153,21 @@
                                             <span style="color: #EF7D21;float: right;">Rating <%= women.rating %> </span>
                                         <% } %>
                                     </div>
+                                    <% if(user.username !== "Admin"){ %>
+                                        <form action="/Mybag/addmycart/<%= women._id %> " method="GET">
+                                            <button class="buy" style="width: 120px;height: 30px;position: absolute;margin-top: 28px;left: 50px;">
+                                                <% if(user.mycartArray.includes(women._id)){ %>
+                                                    <img src="/css/icon/tick.png" alt="" 
+                                                    style="width: 15px;height: 15px;position: absolute;bottom: 5px;left: 0">
+                                                    <p style="float: right !important;margin-right: 10px;">ADDED</p>
+                                                <% } else{ %>
+                                                    <img src="/css/icon/shopping-bag.png" alt="" 
+                                                    style="width: 15px;height: 15px;position: absolute;bottom: 5px;left: 3px">
+                                                    <p style="float: right !important;margin-right: 22px;">BUY</p>
+                                                <% } %> 
+                                            </button>
+                                        </form>
+                                    <% } %>
                                 </div>
                             <% } %>
                         </div>
@@ -171,3 +208,22 @@
         </div>
 
     </div>
+<% if(user.username==="Admin"){ %>
+    <style>
+        .item-single{
+            height: 280px !important;
+        }
+    </style>
+<% }else{ %> 
+    <style>
+        .item-single{
+            height: 263px !important;
+        }
+        .item-single #show-price{
+            margin-top: 9.73rem !important;
+        }
+        .item-single > a img{
+            height: 175px !important;
+        }
+    </style>
+<% } %>  

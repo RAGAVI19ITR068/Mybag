@@ -108,7 +108,6 @@
 }
 .item-flex .item-single{
     width: 235px;
-    height: 289px;
     display: inline-block !important;
     background: #000000 0% 0% no-repeat padding-box !important;
     border-radius: 0px 13px 0px 0px !important;
@@ -122,10 +121,10 @@
 }
 .item-single img{
     width: 180px;
-    height: 200px;
+    height: 190px;
     border-radius: 0px 13px 0px 0px;
     opacity: 1;
-    margin: 22px 26px 10px;
+    margin: 20px 26px 5px;
 }
 
 .item{

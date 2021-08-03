@@ -51,8 +51,14 @@
                     <img src="<%= product.image%>" alt="" style="margin: 4% 0 0 4%;">
                     <div style="margin-left: 3%;">
                         <h4> <%= product.productName%> </h4> 
-                        <p style="line-height: 40px;"> By <%= product.manufacturer%> <br> Rating: <%= product.rating%> <br></p>
-    
+                        <p style="line-height: 40px;"> By <%= product.manufacturer%> <br> 
+                            <% for(let i=0;i<product.rating;i++){ %>
+                                <span class="dot" style="background-color: #EF7D21;"></span>
+                            <% } %>
+                            <% for(let i=product.rating;i<5;i++){ %>
+                                <span class="dot" style="background-color: white;"></span>
+                            <% } %><br>
+                        </p>
                         <div id="show-price">
                             <p> $<%= product.price%> </p>
                         </div>
