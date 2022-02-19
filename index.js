@@ -34,6 +34,25 @@ app.use(methodOverride('_method'));
 
 app.set('trust proxy',1);
 app.use(express.urlencoded({ extended: true }));
+app.use(session({
+    cookie:{
+        secure: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    },
+    store: new RedisStore(),
+    secret: 'secret',
+    saveUninitialized: true,
+    resave: false
+    }));
+    
+    app.use(function(req,res,next){
+    if(!req.session){
+        return next(new Error('Oh no')) //handle error
+    }
+    next() //otherwise continue
+});
+    
 const sessionConfig = {
     secret: 'secret',
     resave: false,
@@ -44,6 +63,8 @@ const sessionConfig = {
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
 }
+
+
 app.use(session(sessionConfig));
 app.use(flash());
 // app.use(passport.initialize());
