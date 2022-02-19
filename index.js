@@ -40,32 +40,31 @@ app.use(session({
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     },
-    store: new RedisStore(),
     secret: 'secret',
     saveUninitialized: true,
     resave: false
-    }));
+}));
     
-    app.use(function(req,res,next){
+app.use(function(req,res,next){
     if(!req.session){
         return next(new Error('Oh no')) //handle error
     }
     next() //otherwise continue
 });
     
-const sessionConfig = {
-    secret: 'secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-        httpOnly: true,
-        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
-        maxAge: 1000 * 60 * 60 * 24 * 7
-    }
-}
+// const sessionConfig = {
+//     secret: 'secret',
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: {
+//         httpOnly: true,
+//         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+//         maxAge: 1000 * 60 * 60 * 24 * 7
+//     }
+// }
 
 
-app.use(session(sessionConfig));
+// app.use(session(sessionConfig));
 app.use(flash());
 // app.use(passport.initialize());
 // app.use(passport.session());
