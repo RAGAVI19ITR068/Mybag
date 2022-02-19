@@ -19,7 +19,8 @@
 
 .index-body{
     background: rgb(212, 212, 212) 0% 0% no-repeat padding-box;
-    height: 100vh !important;
+    height: max-content !important;
+    overflow: hidden !important;
     opacity: 1;
 }
 .index-body h2:nth-child(1){
