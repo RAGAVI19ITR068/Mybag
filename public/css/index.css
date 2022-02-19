@@ -1,4 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+::-webkit-scrollbar {
+    width: 12px;
+}
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px rgb(206, 206, 206); 
+    border-radius: 5px;
+}
+::-webkit-scrollbar-thumb {
+    background: black; 
+    border-radius: 5px;
+}
+
 *{
     font-family: 'Open Sans', sans-serif;
     font-weight: 600 !important;
@@ -103,8 +115,9 @@
 }
 
 .item-flex{
-    width: max-content !important;
-    height: max-content !important;
+    width: 70rem !important;
+    height: 17.6rem !important;
+    overflow-x: auto;
 }
 .item-flex .item-single{
     width: 235px;
@@ -113,6 +126,7 @@
     border-radius: 0px 13px 0px 0px !important;
     opacity: 1 !important;
     margin-left: 2rem;
+    margin-bottom: 0.5rem;
     backdrop-filter: blur(0px);
     -webkit-backdrop-filter: blur(0px);
 }

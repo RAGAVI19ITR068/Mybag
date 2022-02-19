@@ -5,15 +5,24 @@ const { db } = require('../models/product');
 const Product = require('../models/product');
 const Auth = require('../models/user');
 
+// var confirm = require('confirm-dialog');
+
 router.use(methodOverride('_method'));
 
 const categories = ['Men', 'Women'];
 const ratings = [5.0, 4.0, 3.0, 2.0, 1.0];
 
+const requiredLogin = (req, res, next) => {
+    if (!req.session.user_id) {
+        req.flash('error', "Session expired");
+        return res.redirect('/Mybag/login');
+    }
+    next();
+}
 //index page redirectio which having available products
-router.get('/Mybag/products', async (req, res) => {
+router.get('/Mybag/products', requiredLogin, async (req, res) => {
     const { category } = req.query;
-    const user = await Auth.findById(req.session.user_id)
+    const user = await Auth.findById(req.session.user_id);
     if (category) {
         const products = await Product.find({ category })
         res.render('index', { user, products, category })
@@ -26,11 +35,11 @@ router.get('/Mybag/products', async (req, res) => {
 
 //Admin Part
 //Add item into MyBag.shop 
-router.get('/Mybag/additem', async (req, res) => {
+router.get('/Mybag/additem', requiredLogin, async (req, res) => {
     const user = await Auth.findById(req.session.user_id);
     res.render('addItems', { user, categories, ratings })
 })
-router.post('/Mybag/additem', async (req, res) => {
+router.post('/Mybag/additem', requiredLogin, async (req, res) => {
     const { productName, manufacturer, category, rating, price, image, about } = req.body;
     if (productName && manufacturer && category && rating && price && image && about) {
         const newProduct = new Product({ productName, manufacturer, category, rating, price, image, about });
@@ -44,7 +53,7 @@ router.post('/Mybag/additem', async (req, res) => {
 })
 
 //Show page for particular product
-router.get('/Mybag/showitem/:id', async (req, res) => {
+router.get('/Mybag/showitem/:id', requiredLogin, async (req, res) => {
     const { id } = req.params;
     const user = await Auth.findById(req.session.user_id);
     const product = await Product.findById(id)
@@ -52,13 +61,13 @@ router.get('/Mybag/showitem/:id', async (req, res) => {
 })
 
 //Edit particular item
-router.get('/Mybag/edititem/:id', async (req, res) => {
+router.get('/Mybag/edititem/:id', requiredLogin, async (req, res) => {
     const { id } = req.params;
     const user = await Auth.findById(req.session.user_id);
     const product = await Product.findById(id);
     res.render('edit', { user, product, categories, ratings })
 })
-router.put('/Mybag/edititem/:id', async (req, res) => {
+router.put('/Mybag/edititem/:id', requiredLogin, async (req, res) => {
     const { productName, manufacturer, category, rating, price, image, about } = req.body;
     if (productName && manufacturer && category && rating && price && image && about) {
         const { id } = req.params;
@@ -74,7 +83,7 @@ router.put('/Mybag/edititem/:id', async (req, res) => {
 })
 
 //Delete particular item
-router.delete('/Mybag/deleteitem/:id', async (req, res) => {
+router.delete('/Mybag/deleteitem/:id', requiredLogin, async (req, res) => {
     const { id } = req.params;
     const deletedProduct = await Product.findByIdAndDelete(id);
     req.flash('success', "Item deleted successfully");
@@ -83,7 +92,7 @@ router.delete('/Mybag/deleteitem/:id', async (req, res) => {
 
 //User Part
 //Add item to respective user cart
-router.get('/Mybag/addmycart/:id', async (req, res) => {
+router.get('/Mybag/addmycart/:id', requiredLogin, async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
     await Auth.findByIdAndUpdate(
@@ -97,31 +106,31 @@ router.get('/Mybag/addmycart/:id', async (req, res) => {
 })
 
 //Mycart display
-router.get('/Mybag/showmycart', async (req, res) => {
+router.get('/Mybag/showmycart', requiredLogin, async (req, res) => {
     const user = await Auth.findById(req.session.user_id);
     var product = [];
-    var i=0;
-    for(let mycart of user.mycartArray){
+    var i = 0;
+    for (let mycart of user.mycartArray) {
         product[i] = await Product.findById(mycart);
-        i+=1;
+        i += 1;
     }
     res.render('mycart', { user, product });
 })
 
 //Mycart particular item display
-router.get('/Mybag/mycart/:id', async (req, res) => {
+router.get('/Mybag/mycart/:id', requiredLogin, async (req, res) => {
     const user = await Auth.findById(req.session.user_id);
     const { id } = req.params;
     const product = await Product.findById(id);
     res.render('mycartShow', { user, product });
 })
 
-router.get('/Mybag/buy', (req, res) => {
+router.get('/Mybag/buy', requiredLogin, (req, res) => {
     res.send('You have bought this item successfully');
 })
 
 //Delete item from Mycart
-router.delete('/Mybag/mycart/deleteitem/:id', async (req, res) => {
+router.delete('/Mybag/mycart/deleteitem/:id', requiredLogin, async (req, res) => {
     const { id } = req.params;
     const product = await Product.findById(id);
     await Auth.findByIdAndUpdate(
@@ -129,7 +138,7 @@ router.delete('/Mybag/mycart/deleteitem/:id', async (req, res) => {
         $pull: {
             mycartArray: product._id
         }
-    })
+    });
     req.flash('success', "Item from your cart is deleted successfully");
     res.redirect('/Mybag/showmycart');
 })

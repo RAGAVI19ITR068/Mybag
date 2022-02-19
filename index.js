@@ -1,3 +1,7 @@
+// if(process.env.NODE_ENV !== "production"){
+//     require('dotenv').config();
+// }
+
 const express = require('express');
 const { render } = require('ejs');
 const ejsMate = require('ejs-mate');
@@ -15,7 +19,11 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/product');
 const methodOverride = require('method-override');
 
+require('dotenv').config({path: 'atlas.env'});
+
+// const dbUrl = process.env.DB_URL;
 const app = express();
+const port = process.env.PORT || 2000;
 
 app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
@@ -61,6 +69,6 @@ const requiredLogin = (req, res, next) => {
     next();
 }
 
-app.listen(2000, async () => {
+app.listen(port, async () => {
     console.log("listening to the port 2000!...");
 })

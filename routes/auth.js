@@ -14,8 +14,9 @@ const requiredLogin = (req, res, next) => {
     next();
 }
 
-router.get('/', (req, res) => {
+router.get('/', requiredLogin, async (req, res) => {
     res.send("This is the home page!...");
+    res.redirect('/Mybag/login/res');
 })
 
 //New user registration
@@ -25,12 +26,12 @@ router.get('/Mybag/register', (req, res) => {
 router.post('/Mybag/register', async (req, res) => {
     const { username, password, reenterpassword } = req.body;
     if (username && (password && reenterpassword)) {
-        const exists = await Auth.findOne({username: username})
-        if(exists) {
+        const exists = await Auth.findOne({ username: username });
+        if (exists) {
             req.flash('error', "User already exists");
             res.redirect('/Mybag/register');
         }
-        if(password.length < 6){
+        if (password.length < 6) {
             req.flash('error', "Passwords should be atleast 6 characters");
             res.redirect('/Mybag/register');
         }
@@ -54,8 +55,8 @@ router.post('/Mybag/register', async (req, res) => {
 router.get('/Mybag/register/:id', requiredLogin, async (req, res) => {
     const { id } = req.params;
     const user = await Auth.findById(id);
-    const productsMen = await Product.find({category: "Men"})
-    const productsWomen = await Product.find({category: "Women"})
+    const productsMen = await Product.find({ category: "Men" })
+    const productsWomen = await Product.find({ category: "Women" })
     res.render('index', { user, productsMen, productsWomen, category: 'All' });
 })
 
@@ -66,19 +67,26 @@ router.get('/Mybag/login', (req, res) => {
 router.post('/Mybag/login', async (req, res) => {
     const { username, password } = req.body;
     if (username && password) {
-        const foundUser = await Auth.findAndValidate(username, password);
-        if (foundUser) {
-            req.session.user_id = foundUser._id;
-            if (username === "Admin") {
-                req.flash('success', "Successfully login as an Admin");
-                res.redirect('/Mybag/login/res');
-            } else {
-                req.flash('success', "Successfully login as a User");
-                res.redirect('/Mybag/login/res');
-            }
-        } else {
-            req.flash('error', "Username or password is incorrect");
+        const exists = await Auth.findOne({ username: username });
+        if (!exists) {
+            req.flash('error', "Username not found");
             res.redirect('/Mybag/login');
+        }
+        else {
+            const foundUser = await Auth.findAndValidate(username, password);
+            if (foundUser) {
+                req.session.user_id = foundUser._id;
+                if (username === "Admin") {
+                    req.flash('success', "Successfully login as an Admin");
+                    res.redirect('/Mybag/login/res');
+                } else {
+                    req.flash('success', "Successfully login as a User");
+                    res.redirect('/Mybag/login/res');
+                }
+            } else {
+                req.flash('error', "Username or password is incorrect");
+                res.redirect('/Mybag/login');
+            }
         }
     } else {
         req.flash('error', "All fields required");
@@ -88,8 +96,8 @@ router.post('/Mybag/login', async (req, res) => {
 })
 router.get('/Mybag/login/res', requiredLogin, async (req, res) => {
     const user = await Auth.findById(req.session.user_id);
-    const productsMen = await Product.find({category: "Men"})
-    const productsWomen = await Product.find({category: "Women"})
+    const productsMen = await Product.find({ category: "Men" })
+    const productsWomen = await Product.find({ category: "Women" })
     res.render('index', { user, productsMen, productsWomen, category: 'All' });
 })
 

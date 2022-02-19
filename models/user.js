@@ -1,10 +1,15 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 
-mongoose.connect('mongodb://localhost:27017/Mybag-raga', {
+// const dbUrl = process.env.DB_URL;
+// 'mongodb://localhost:27017/Mybag-raga'
+const uri  = 'mongodb+srv://Raga:raga29Mybag@mybag.wkbap.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+// mongoose.connect(dbUrl);
+mongoose.connect(uri, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useFindAndModify: false
 }).then(() => {
     console.log("Mongo connection for authendication is open!!!");
 }).catch(err => {

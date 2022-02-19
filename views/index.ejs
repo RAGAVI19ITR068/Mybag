@@ -1,5 +1,7 @@
 <% layout('template') %>
     <link rel="stylesheet" href="/css/index.css">
+    <script src="../routes/fade.js"></script>
+
 
     <% if(user.username === "Admin"){ %>
         <% var nav_id = "nav-admin" %>
@@ -47,7 +49,14 @@
     <% } %>
 
     <div class="index-body" >
-        <%= success %> 
+        <% if(success && success.length){ %>
+            <div id="success-alert" class="alert alert-success alert-dismissible fade show w-50" role="alert" style="margin-left: 11rem;">
+                <%= success %> 
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close" style="border: none; background: rgba(255, 255, 255, 0);float: right;">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <% } %>
         <h2>Hello, <%= user.username %></h2>
     
         <div class="index-content">
@@ -88,7 +97,7 @@
                                     </div> 
                                     <% if(user.username !== "Admin"){ %>
                                         <form action="/Mybag/addmycart/<%= men._id %> " method="GET">
-                                            <button class="buy" style="width: 120px;height: 30px;position: absolute;margin-top: 28px;left: 50px;">
+                                            <button class="buy" style="width: 120px;height: 30px;position: relative;margin-top: 10px !important;left: 50px;margin-bottom: 30px !important;">
                                                 <% if(user.mycartArray.includes(men._id)){ %>
                                                     <img src="/css/icon/tick.png" alt="" 
                                                     style="width: 15px;height: 15px;position: absolute;bottom: 5px;left: 0">
@@ -155,7 +164,7 @@
                                     </div>
                                     <% if(user.username !== "Admin"){ %>
                                         <form action="/Mybag/addmycart/<%= women._id %> " method="GET">
-                                            <button class="buy" style="width: 120px;height: 30px;position: absolute;margin-top: 28px;left: 50px;">
+                                            <button class="buy" style="width: 120px;height: 30px;position: relative;margin-top: 20px !important;left: 50px;margin-bottom: 20px !important;">
                                                 <% if(user.mycartArray.includes(women._id)){ %>
                                                     <img src="/css/icon/tick.png" alt="" 
                                                     style="width: 15px;height: 15px;position: absolute;bottom: 5px;left: 0">
